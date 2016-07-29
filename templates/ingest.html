@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Run Ingest Task</title>
+</head>
+
+<body> 
+  <!-- Only Colin will ever see this page so don't waste time making it look nice-->
+  <form action="schedule" method="post">
+    <div>Run ETL task for NYC Open Data Restaurant Inspection</div>
+    <div>
+      <label for="url">URL of CSV file:</label>
+      <input type="text" name="url" value="https://nycopendata.socrata.com/api/views/xx67-kt59/rows.csv?accessType=DOWNLOAD"/>
+    </div>
+    <div>
+      <input type="submit" name="submit" value="Submit" />
+    </div>
+  <form>
+</body>
+
+</html>
+
