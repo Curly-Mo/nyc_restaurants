@@ -1,4 +1,0 @@
-queue:
-- name: default-queue
-  target: v2.task-module
-  rate: 1/s

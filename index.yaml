@@ -1,0 +1,8 @@
+indexes:
+
+- kind: Restaurant
+  ancestor: no
+  properties:
+  - name: grade
+  - name: score
+    direction: desc
