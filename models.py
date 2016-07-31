@@ -8,7 +8,7 @@ class Restaurant(ndb.Model):
     street = ndb.StringProperty()
     zipcode = ndb.StringProperty()
     phone = ndb.StringProperty()
-    cuisine_description = ndb.StringProperty()
+    cuisine_description = ndb.StringProperty(repeated=True)
     grade = ndb.StringProperty()
     grade_date = ndb.DateProperty()
     record_date = ndb.DateProperty()

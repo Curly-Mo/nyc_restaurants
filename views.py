@@ -1,10 +1,7 @@
 import os
-import csv
-import urllib2
 
 import webapp2
 import jinja2
-from google.appengine.api import users
 from google.appengine.api import taskqueue
 
 
@@ -24,21 +21,15 @@ class Index(webapp2.RequestHandler):
 
 class Schedule(webapp2.RequestHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('ingest.html')
+        template = JINJA_ENVIRONMENT.get_template('schedule.html')
         self.response.write(template.render())
 
     def post(self):
-        url = self.request.get('url')
+        urls = self.request.get('urls')
         task = taskqueue.add(
             url='/admin/ingest',
             target='worker',
-            params={'url': url}
+            params={'urls': urls}
         )
         self.response.write('Task {} enqueued, '.format(task.name))
         self.response.write('ETA {}.'.format(task.eta))
-
-
-class Logout(webapp2.RequestHandler):
-    def get(self):
-        url = users.create_logout_url('/')
-        self.redirect(url)

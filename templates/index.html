@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>NYC Restaurant Inspections</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link href="/css/main.css" rel="stylesheet">
+</head>
+
+<body> 
+  <h1>NYC Restaurant Inspections</h1>
+  <form id="search-form">
+    <label>Name:<input type="text" name="name" value="" /></label>
+    <br>
+    <label>Cuisine:<input type="text" name="cuisine" value="thai" /></label>
+    <br>
+    <label>Boro:
+      <label><input type="checkbox" name="boro" value="MANHATTAN" checked />Manhattan</label>
+      <label><input type="checkbox" name="boro" value="BROOKLYN" checked />Brooklyn</label>
+      <label><input type="checkbox" name="boro" value="QUEENS" checked />Queens</label>
+      <label><input type="checkbox" name="boro" value="BRONX" checked />Bronx</label>
+      <label><input type="checkbox" name="boro" value="STATEN ISLAND" checked />Staten Island</label>
+    </label>
+    <br>
+    <label>Limit:<input type="number" name="limit" value="10" min="1" max="500" /></label>
+    <br>
+  </form>
+
+  <table id="restaurant-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Cuisine</th>
+        <th>Boro</th>
+        <th>Grade</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <div class="spinner" id="loader">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+  </div>
+
+	<script src="/js/main.js"></script>
+</body>
+
+</html>
+
