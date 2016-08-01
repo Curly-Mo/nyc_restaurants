@@ -98,6 +98,11 @@ class Ingest(webapp2.RequestHandler):
                         type=fields['inspection_type'],
                         violations=[]
                     )
+                if (inspection.grade_date is None or
+                      fields['grade_date'] and
+                      fields['grade_date'] > inspection.grade_date):
+                    inspection.grade = fields['grade']
+                    inspection.grade_date = fields['grade_date']
                 if violation and violation.key not in inspection.violations:
                     inspection.violations.append(violation.key)
                 inspection.put()

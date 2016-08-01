@@ -157,7 +157,7 @@ function get_inspections(restaurant_id, node){
 
 // Add list off restaurant objects to table
 function build_inspection_table(inspections, node){
-    var headers = ['type', 'action', 'score', 'date'];
+    var headers = ['type', 'action', 'score', 'grade', 'date'];
     var table = document.createElement('table');
     var header_row = document.createElement('tr');
     table.appendChild(header_row);
@@ -252,7 +252,7 @@ function google_maps(restaurant, node){
     var address = [restaurant.street, restaurant.boro, 'NY', restaurant.zipcode].join(', ');
     var params = {
         'q': restaurant.dba + ', ' + address,
-        'key': 'AIzaSyDQ-AFM5aQaD1HX3bSXuKMCh-zpphnxcaI',
+        'key': 'AIzaSyAa0EpTUiJhjXgVw47NECBP9ASM40V9Fns',
     }
     maps_url = maps_url + encode_params(params);
     var maps_embed = document.createElement('iframe');
