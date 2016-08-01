@@ -8,32 +8,32 @@ Violations with the same Restaurant_id/Inspection_date pair were considered to b
 The Restaurant grade and grade_date are kept up to date in the Restaurant entity. I made this decision because it seems to me that inspection history is not important and the relevant information is in the latest inspection. Though the grade history could still be found by parsing a Restaurants list of inspections.
 
 
-Restaurant
-    id
-    dba
-    boro
-    building
-    street
-    zipcode
-    phone
-    cuisine_description
-    grade
-    grade_date
-    record_date
-    Inspections[]
+Restaurant  
+  * id  
+  * dba  
+  * boro  
+  * building  
+  * street  
+  * zipcode  
+  * phone  
+  * cuisine_description  
+  * grade  
+  * grade_date  
+  * record_date  
+  * Inspections[]  
 
-Inspection
-    Restaurant
-    date
-    action
-    Violations[]
-    score
-    grade
-    grade_date
-    record_date
-    type
+Inspection  
+  * Restaurant  
+  * date  
+  * action  
+  * Violations[]  
+  * score  
+  * grade  
+  * grade_date  
+  * record_date  
+  * type  
 
-Violation
-    code
-    description
-    critical_flag
+Violation  
+  * code  
+  * description  
+  * critical_flag  
