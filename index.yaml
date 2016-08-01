@@ -78,6 +78,25 @@ indexes:
 
 - kind: Restaurant
   properties:
+  - name: boro
+  - name: grade
+    direction: desc
+
+- kind: Restaurant
+  properties:
+  - name: cuisine_description
+  - name: dba
+  - name: grade
+
+- kind: Restaurant
+  properties:
+  - name: cuisine_description
+  - name: dba
+  - name: grade
+    direction: desc
+
+- kind: Restaurant
+  properties:
   - name: cuisine_description
   - name: grade
 
@@ -86,3 +105,20 @@ indexes:
   - name: cuisine_description
   - name: grade
   - name: boro
+
+- kind: Restaurant
+  properties:
+  - name: cuisine_description
+  - name: grade
+    direction: desc
+
+- kind: Restaurant
+  properties:
+  - name: dba
+  - name: grade
+
+- kind: Restaurant
+  properties:
+  - name: dba
+  - name: grade
+    direction: desc

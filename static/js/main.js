@@ -211,12 +211,14 @@ function violation_row(violations){
     row.appendChild(document.createElement('td'));
     var cell = document.createElement('td');
     cell.setAttribute('colspan', '100%');
-    var descriptions = [];
+    cell.style['text-align'] = 'left';
+    var list = document.createElement('ul');
     for(var i=0; i<violations.length; i++){
-        descriptions.push(violations[i]['description']);
+        var item = document.createElement('li');
+        item.textContent = violations[i]['description'];
+        list.appendChild(item);
     }
-    var value = descriptions.join('<br>');
-    cell.innerHTML = value;
+    cell.appendChild(list);
     row.appendChild(cell);
     row.style.display = 'none';
     return row;
