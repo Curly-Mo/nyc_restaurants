@@ -2,6 +2,7 @@
 window.addEventListener("load", init, false);
 
 function init(){
+    window.restaurants = {};
     var form = document.getElementById('search-form');
     form.onsubmit = function() {
         //get_restaurants();
@@ -89,8 +90,10 @@ function build_restaurant_table(restaurants){
     var headers = ['dba', 'cuisine_description', 'boro', 'grade'];
     var fragment = document.createDocumentFragment();
     for(var i=0; i<restaurants.length; i++){
-        var row = restaurant_row(restaurants[i], headers);
+        var restaurant = restaurants[i];
+        var row = restaurant_row(restaurant, headers);
         fragment.appendChild(row);
+        window.restaurants[restaurant['camis']] = restaurant;
     }
     var table_body = document.querySelector('#restaurant-table > tbody');
     table_body.appendChild(fragment);
@@ -108,7 +111,7 @@ function restaurant_row(restaurant, headers){
         cell.textContent = value;
         row.appendChild(cell);
     }
-    row['data-id'] = restaurant['camis'];
+    row.setAttribute('data-id', restaurant['camis']);
     row.addEventListener('click', restaurant_details);
     row.style.cursor = 'pointer';
     return row;
@@ -116,7 +119,7 @@ function restaurant_row(restaurant, headers){
 
 // Query and display the inspections for a restaurant
 function restaurant_details(e){
-    var id = this['data-id'];
+    var id = this.getAttribute('data-id');
     get_inspections(id, this);
 }
 
@@ -175,10 +178,14 @@ function build_inspection_table(inspections, node){
     tr.classList.add('subtable');
     var td = document.createElement('td');
     td.setAttribute('colspan', '100%');
-    tr.appendChild(document.createElement('td'));
+    var empty_td = document.createElement('td');
+    tr.appendChild(empty_td);
     tr.appendChild(td);
     td.appendChild(table)
     node.parentNode.insertBefore(tr, node.nextSibling);
+
+    console.log(node)
+    google_maps(window.restaurants[node.getAttribute('data-id')], empty_td);
 }
 
 // Build a table row from a restaurant object
@@ -238,3 +245,25 @@ function empty_node(node){
     node.parentNode.replaceChild(cnode ,node);
 }
 
+
+// Create google maps embed iframe and append it to node
+function google_maps(restaurant, node){
+    var maps_url = 'https://www.google.com/maps/embed/v1/place?';
+    var address = [restaurant.street, restaurant.boro, 'NY', restaurant.zipcode].join(', ');
+    var params = {
+        'q': restaurant.dba + ', ' + address,
+        'key': 'AIzaSyDQ-AFM5aQaD1HX3bSXuKMCh-zpphnxcaI',
+    }
+    maps_url = maps_url + encode_params(params);
+    var maps_embed = document.createElement('iframe');
+    maps_embed.setAttribute('src', maps_url);
+    maps_embed.setAttribute('frameborder', 0);
+    maps_embed.setAttribute('allowfullscreen', '');
+    maps_embed.setAttribute('width', 600);
+    maps_embed.setAttribute('height', 450);
+
+    maps_embed.style.width = '100%';
+    maps_embed.style.height = '100%',
+    maps_embed.style.border = '0';
+    node.appendChild(maps_embed);
+}

@@ -5,7 +5,7 @@ body {
 
 table {
   empty-cells: show;
-  margin: 25px auto;
+  margin: 0 auto 25px auto;
   border-collapse: collapse;
   border: 1px solid #eee;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1),
@@ -38,6 +38,9 @@ table th.last {
   border-right: none;
 }
 
+.subtable {
+	vertical-align: top;
+}
 .subtable:hover {
   background: initial;
 }
@@ -157,4 +160,11 @@ label:not(.check-label) {
 	vertical-align: middle;
 	float:left;
 	line-height: 1.9em;
+}
+
+#right-container {
+	float: right;
+}
+#container { 
+	margin: 25px 0;
 }
