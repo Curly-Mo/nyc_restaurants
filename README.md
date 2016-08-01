@@ -3,6 +3,12 @@
 Ingest and view data from the NYC Open Data Restaurant Inspection Results data set
 
 
+### To Run Locally
+(Requires the Google App Engine Python SDK)
+    pip install -r requirements.txt -t lib
+    dev_appserver.py app.yaml
+
+
 ## Relevant Code
 * tasks.py
   * contains the ETL ingest task
