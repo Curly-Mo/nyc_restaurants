@@ -1,11 +1,3 @@
-# NYC Restaurants
-
-Ingest and view data from the NYC Open Data Restaurant Inspection Results data set
-
-
-
-
-
 # Schema Design
 
 The denormalized data was rather awkward to parse with a line per violation.
