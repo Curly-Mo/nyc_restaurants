@@ -7,6 +7,7 @@ from google.appengine.ext import ndb
 
 import models
 
+# Map string identifiers to model properties
 PROPS = {
     'name': models.Restaurant.dba,
     'grade': models.Restaurant.grade,
@@ -15,6 +16,7 @@ PROPS = {
 }
 
 class Restaurants(webapp2.RequestHandler):
+    """Endpoint to query datastore for a JSON list of Restaurant objects"""
     def get(self):
         min_grade = self.request.get('min_grade')
         max_grade = self.request.get('max_grade')
@@ -68,6 +70,10 @@ class Restaurants(webapp2.RequestHandler):
         self.response.write(response)
 
 class Inspections(webapp2.RequestHandler):
+    """
+    Endpoint to query datastore for a JSON list of Inspections given a
+    restaurant id
+    """
     def get(self):
         restaurant_id = int(self.request.get('restaurant_id'))
         logging.info(restaurant_id)

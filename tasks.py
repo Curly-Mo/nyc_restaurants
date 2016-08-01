@@ -10,6 +10,10 @@ import models
 
 
 class Ingest(webapp2.RequestHandler):
+    """
+    Parse a list of NYC Open Data Restaurant Inspection csv urls and load
+    into the Datastore
+    """
     def post(self):
         urls = self.request.get('urls')
 
