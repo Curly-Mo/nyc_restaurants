@@ -2,14 +2,47 @@
 window.addEventListener("load", init, false);
 
 function init(){
-    var form =document.getElementById('search-form');
+    var form = document.getElementById('search-form');
     form.onsubmit = function() {
-        get_restaurants();
+        //get_restaurants();
         return false;
     };
     form.onchange = function() {
         get_restaurants();
     };
+    var sortable_headers = document.querySelectorAll('#restaurant-table > thead > tr > th');
+    for(var i=0; i<sortable_headers.length; i++){
+        var header = sortable_headers[i];
+        header.addEventListener('click', sort_by);
+    }
+    get_restaurants();
+}
+
+// Sort by this column header
+function sort_by(e){
+    var form = document.getElementById('search-form');
+    var data = new FormData(form);
+    var value = this.textContent;
+    if(!data.get(value.toLowerCase())){
+        return;
+    }
+    var siblings = document.querySelectorAll('#restaurant-table > thead > tr > th');
+    for(var i=0; i<siblings.length; i++){
+        if(siblings[i] != this){
+            siblings[i].classList.remove('sort-asc')
+            siblings[i].classList.remove('sort-desc')
+        }
+    }
+    form.querySelector('#sort_order').value = value;
+    if(!this.classList.contains('sort-asc')){
+        this.classList.remove('sort-desc');
+        this.classList.add('sort-asc');
+        form.querySelector('#reverse').value = false;
+    }else{
+        this.classList.remove('sort-asc');
+        this.classList.add('sort-desc');
+        form.querySelector('#reverse').value = true;
+    }
     get_restaurants();
 }
 
@@ -18,9 +51,10 @@ function get_restaurants(){
     var data = new FormData(document.getElementById('search-form'));
 	var base_url = '/api/restaurants';
 	var params = {
-        'min_grade': 'B',
-        'sort_order': 'grade',
-        'reverse': false,
+        'min_grade': data.get('grade'),
+        'max_grade': data.get('max_grade'),
+        'sort_order': data.get('sort_order'),
+        'reverse': data.get('reverse'),
         'cuisine': data.get('cuisine'),
         'boro': data.getAll('boro'),
         'name': data.get('name'),
@@ -74,6 +108,117 @@ function restaurant_row(restaurant, headers){
         cell.textContent = value;
         row.appendChild(cell);
     }
+    row['data-id'] = restaurant['camis'];
+    row.addEventListener('click', restaurant_details);
+    row.style.cursor = 'pointer';
+    return row;
+}
+
+// Query and display the inspections for a restaurant
+function restaurant_details(e){
+    var id = this['data-id'];
+    get_inspections(id, this);
+}
+
+function get_inspections(restaurant_id, node){
+    var subtable = document.querySelector('.subtable');
+    if(subtable){
+        subtable.parentElement.removeChild(subtable);
+    }
+	var base_url = '/api/inspections';
+	var params = {
+        'restaurant_id': restaurant_id,
+    }
+    var url = base_url + '?' + encode_params(params);
+	var xhr = new XMLHttpRequest();
+    xhr.node = node;
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        document.getElementById('loader').style.display = 'none';
+        if (xhr.readyState == XMLHttpRequest.DONE ) {
+           if (xhr.status == 200) {
+               var data = JSON.parse(xhr.responseText);
+               console.log(data);
+               build_inspection_table(data, this.node);
+           }
+           else if (xhr.status == 400) {
+               console.log('Errored!');
+           }
+           else {
+               console.log('Error: ' + xhr.status);
+           }
+        }
+    };
+    xhr.send();
+}
+
+// Add list off restaurant objects to table
+function build_inspection_table(inspections, node){
+    var headers = ['type', 'action', 'score', 'date'];
+    var table = document.createElement('table');
+    var header_row = document.createElement('tr');
+    table.appendChild(header_row);
+    for(var i=0; i<headers.length; i++){
+        var cell = document.createElement('th');
+        cell.textContent = headers[i];
+        header_row.appendChild(cell);
+    }
+    var body = document.createElement('tbody');
+    table.appendChild(body);
+    for(var i=0; i<inspections.length; i++){
+        var row = inspection_row(inspections[i], headers);
+        body.appendChild(row);
+        var violations = violation_row(inspections[i]['violations']);
+        body.appendChild(violations);
+    }
+    var tr = document.createElement('tr');
+    tr.classList.add('subtable');
+    var td = document.createElement('td');
+    td.setAttribute('colspan', '100%');
+    tr.appendChild(document.createElement('td'));
+    tr.appendChild(td);
+    td.appendChild(table)
+    node.parentNode.insertBefore(tr, node.nextSibling);
+}
+
+// Build a table row from a restaurant object
+function inspection_row(inspection, headers){
+    var row = document.createElement('tr');
+    for(var i=0; i<headers.length; i++){
+        var cell = document.createElement('td');
+        var value = inspection[headers[i]];
+        if(Array.isArray(value)){
+            value = value.join(', ');
+        }
+        cell.textContent = value;
+        row.appendChild(cell);
+    }
+    row.addEventListener('click', function(){
+        var violations = this.nextSibling;
+        if(violations.offsetParent === null){
+            violations.style.display = 'table-row';
+        }else{
+            violations.style.display = 'none';
+        }
+    });
+    row.style.cursor = 'pointer';
+    return row;
+}
+
+// Build a table row from a violation list
+function violation_row(violations){
+    var row = document.createElement('tr');
+    row.appendChild(document.createElement('td'));
+    var cell = document.createElement('td');
+    cell.setAttribute('colspan', '100%');
+    var descriptions = [];
+    for(var i=0; i<violations.length; i++){
+        descriptions.push(violations[i]['description']);
+    }
+    var value = descriptions.join('<br>');
+    cell.innerHTML = value;
+    row.appendChild(cell);
+    row.style.display = 'none';
     return row;
 }
 
@@ -90,3 +235,4 @@ function empty_node(node){
     var cnode = node.cloneNode(false);
     node.parentNode.replaceChild(cnode ,node);
 }
+

@@ -10,4 +10,5 @@ app = webapp2.WSGIApplication([
     ('/admin/schedule', views.Schedule),
     ('/admin/ingest', tasks.Ingest),
     ('/api/restaurants', api.Restaurants),
+    ('/api/inspections', api.Inspections),
 ], debug=True)

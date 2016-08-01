@@ -4,6 +4,7 @@ body {
 }
 
 table {
+  empty-cells: show;
   margin: 25px auto;
   border-collapse: collapse;
   border: 1px solid #eee;
@@ -37,6 +38,32 @@ table th.last {
   border-right: none;
 }
 
+.subtable:hover {
+  background: initial;
+}
+.subtable > td {
+	padding: 0;
+}
+.subtable > td > table {
+	margin: 0;
+}
+.subtable > td > table th{
+  color: #000;
+  background: initial;
+}
+
+.sort-asc:after{
+  content: '\25B2';
+  position: relative;
+	left: 8px;
+	bottom: 2px;
+}
+.sort-desc:after{
+  content: '\25BC';
+  position: relative;
+	left: 8px;
+	bottom: 2px;
+}
 
 .spinner {
   margin: 40px auto;
@@ -89,4 +116,45 @@ table th.last {
     transform: scaleY(1.0);
     -webkit-transform: scaleY(1.0);
   }
+}
+
+form {
+	width: 800px;
+	margin:auto;
+	text-align: initial;
+}
+input[type="text"],
+input[type="number"] {
+    padding: .5em .6em;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+    vertical-align: middle;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+input[type="checkbox"] {
+  -moz-transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
+	margin: 0.6em 0.2em 0.7em 0.5em;
+}
+select {
+    height: 2.25em;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+input {
+    vertical-align: middle;
+		margin: 0.1em;
+}
+
+label:not(.check-label) {
+	width: 150px;
+	text-align: right;
+	vertical-align: middle;
+	float:left;
+	line-height: 1.9em;
 }

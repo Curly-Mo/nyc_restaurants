@@ -11,20 +11,61 @@
 <body> 
   <h1>NYC Restaurant Inspections</h1>
   <form id="search-form">
-    <label>Name:<input type="text" name="name" value="" /></label>
-    <br>
-    <label>Cuisine:<input type="text" name="cuisine" value="thai" /></label>
-    <br>
-    <label>Boro:
-      <label><input type="checkbox" name="boro" value="MANHATTAN" checked />Manhattan</label>
-      <label><input type="checkbox" name="boro" value="BROOKLYN" checked />Brooklyn</label>
-      <label><input type="checkbox" name="boro" value="QUEENS" checked />Queens</label>
-      <label><input type="checkbox" name="boro" value="BRONX" checked />Bronx</label>
-      <label><input type="checkbox" name="boro" value="STATEN ISLAND" checked />Staten Island</label>
-    </label>
-    <br>
-    <label>Limit:<input type="number" name="limit" value="10" min="1" max="500" /></label>
-    <br>
+    <fieldset>
+      <legend>Filters</legend>
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" name="name" value="" />
+      </div>
+      <div>
+        <label for="cuisine">Cuisine:</label>
+        <input type="text" name="cuisine" value="thai" />
+      </div>
+      <div>
+        <label for="boro">Boro:</label>
+        <label class="check-label">
+          <input type="checkbox" name="boro" value="MANHATTAN" checked />Manhattan
+        </label>
+        <label class="check-label">
+          <input type="checkbox" name="boro" value="BROOKLYN" checked />Brooklyn
+        </label>
+        <label class="check-label">
+          <input type="checkbox" name="boro" value="QUEENS" checked />Queens
+        </label>
+        <label class="check-label">
+          <input type="checkbox" name="boro" value="BRONX" checked />Bronx
+        </label>
+        <label class="check-label">
+          <input type="checkbox" name="boro" value="STATEN ISLAND" checked />Staten Island
+        </label>
+      </div>
+      <div>
+        <label for="grade">Grade Range:</label>
+        <select type="text" name="grade">
+          <option value="A">A</option> 
+          <option value="B" selected>B</option> 
+          <option value="C">C</option> 
+          <option value="Not Yet Graded">N</option> 
+          <option value="P">P</option> 
+          <option value="Z">Z</option> 
+        </select>
+        to
+        <select type="text" name="max_grade">
+          <option value="A" selected>A</option> 
+          <option value="B">B</option> 
+          <option value="C">C</option> 
+          <option value="Not Yet Graded">N</option> 
+          <option value="P">P</option> 
+          <option value="Z">Z</option> 
+        </select>
+      </div>
+      <div>
+        <label for="limit">Limit:</label>
+        <input type="number" name="limit" value="10" min="1" max="500" />
+      </div>
+      <input type="hidden" name="sort_order" id="sort_order" value="grade">
+      <input type="hidden" name="reverse" id="reverse" value="false">
+    </fieldset>
   </form>
 
   <table id="restaurant-table">
@@ -33,7 +74,7 @@
         <th>Name</th>
         <th>Cuisine</th>
         <th>Boro</th>
-        <th>Grade</th>
+        <th class="sort-asc">Grade</th>
       </tr>
     </thead>
     <tbody>

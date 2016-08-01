@@ -1,20 +1,23 @@
 import datetime
 import json
 import webapp2
+import logging
 
 from google.appengine.ext import ndb
 
 import models
 
 PROPS = {
-    'dba': models.Restaurant.dba,
+    'name': models.Restaurant.dba,
     'grade': models.Restaurant.grade,
+    'boro': models.Restaurant.boro,
+    'cuisine': models.Restaurant.cuisine_description,
 }
 
 class Restaurants(webapp2.RequestHandler):
     def get(self):
-        print(self.request)
         min_grade = self.request.get('min_grade')
+        max_grade = self.request.get('max_grade')
         sort_order = self.request.get('sort_order', 'dba')
         reverse = self.request.get('reverse', False)
         cuisine = self.request.get('cuisine', '')
@@ -26,10 +29,13 @@ class Restaurants(webapp2.RequestHandler):
 
         if min_grade:
             query = query.filter(
-                models.Restaurant.grade > '',
+                models.Restaurant.grade != '',
                 models.Restaurant.grade <= min_grade.upper()
             )
-
+        if max_grade:
+            query = query.filter(
+                models.Restaurant.grade >= max_grade.upper()
+            )
         if cuisine:
             cuisine = [x.strip().lower() for x in cuisine.split(',')]
             query = query.filter(
@@ -45,23 +51,43 @@ class Restaurants(webapp2.RequestHandler):
                 models.Restaurant.dba == name.upper()
             )
 
-
-        order = query.order(PROPS[sort_order]).orders
+        sort_prop = PROPS[sort_order.lower()]
+        order = query.order(sort_prop).orders
         if reverse and reverse.lower() != 'false':
             order = order.reversed()
-        print(order)
+        logging.info(order)
         query = query.order(order)
 
-        print(query)
+        logging.info(query)
         
         response = []
         for restaurant in query.fetch(limit):
-            print(restaurant)
             response.append(restaurant.to_dict())
 
         response = json.dumps(response, default=JsonHandler)
         self.response.write(response)
 
+class Inspections(webapp2.RequestHandler):
+    def get(self):
+        restaurant_id = int(self.request.get('restaurant_id'))
+        logging.info(restaurant_id)
+
+        restaurant = ndb.Key('Restaurant', restaurant_id).get()
+        inspections = []
+        for key in restaurant.inspections:
+            inspection = key.get()
+            violations = []
+            for violation_key in inspection.violations:
+                violation = violation_key.get()
+                violations.append(violation.to_dict())
+            inspection = inspection.to_dict()
+            inspection['violations'] = violations
+            inspections.append(inspection)
+
+        inspections.sort(key=lambda x: x['date'], reverse=True)
+
+        response = json.dumps(inspections, default=JsonHandler)
+        self.response.write(response)
 
 def JsonHandler(obj):
     """JSON encoder that can parse datetime objects and ndb keys"""

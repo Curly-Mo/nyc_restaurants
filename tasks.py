@@ -63,6 +63,7 @@ class Ingest(webapp2.RequestHandler):
                 if restaurant is None:
                     restaurant = models.Restaurant(
                         id=fields['camis'],
+                        camis=fields['camis'],
                         dba=fields['dba'],
                         boro=fields['boro'],
                         building=fields['building'],

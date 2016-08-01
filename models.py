@@ -2,6 +2,7 @@ from google.appengine.ext import ndb
 
 
 class Restaurant(ndb.Model):
+    camis = ndb.IntegerProperty()
     dba = ndb.StringProperty()
     boro = ndb.StringProperty()
     building = ndb.StringProperty()
