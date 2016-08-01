@@ -4,14 +4,14 @@ Ingest and view data from the NYC Open Data Restaurant Inspection Results data s
 
 
 ## Relevant Code
-*tasks.py
--contains the ETL ingest task
-*api.py
--contains the HTTP endpoints for querying the datastore
-*models.py
--contains the schema design
-*views.py, templates/index.html, static/js/main.js
--Contains the frontend code
+* tasks.py
+  * contains the ETL ingest task
+* api.py
+  - contains the HTTP endpoints for querying the datastore
+* models.py
+  - contains the schema design
+* views.py, templates/index.html, static/js/main.js
+  - Contains the frontend code
 
 
 
